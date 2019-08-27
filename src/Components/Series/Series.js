@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import api from '../../Services/api'
 import Header from '../Header/Header'
 import { Button } from 'reactstrap'
 
@@ -12,14 +12,14 @@ function Series() {
     const [showButton, setShowButton] = useState({ showButtonSave: true, showButtonEdit: false })
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/genres')
+        api.get('/genres')
              .then(res => setGenres(res.data))
         
         getAllSeries()
     }, [])
 
     const getAllSeries = () => {
-        axios.get('http://localhost:3001/api/series')
+        api.get('/series')
              .then(res => setSeries(res.data))
     }
 
@@ -30,7 +30,7 @@ function Series() {
         let name_genre = await document.querySelector('#genre').value
 
         if (name_serie !== '') {
-            await axios.post('http://localhost:3001/api/series', {
+            await api.post('/series', {
                 name_serie,
                 status_serie,
                 name_genre
@@ -64,7 +64,7 @@ function Series() {
         let name_genre = await document.querySelector('#genre').value
         
         if (name_serie !== '') {
-            await axios.put(`http://localhost:3001/api/series/${id}`, {
+            await api.put(`/series/${id}`, {
                 name_serie,
                 status_serie,
                 name_genre
@@ -87,7 +87,7 @@ function Series() {
     }
 
     const deleteSerie = async id => {
-        await axios.delete(`http://localhost:3001/api/series/${id}`)
+        await api.delete(`/series/${id}`)
         getAllSeries()
         document.querySelector('#serie').value = ''
         setMsgError(false)

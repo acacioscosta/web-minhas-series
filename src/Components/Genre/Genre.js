@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import api from '../../Services/api'
 import Header from '../Header/Header'
 import { Button } from 'reactstrap'
 
@@ -14,7 +14,7 @@ function Genre() {
     }, [])
 
     const getAllGenres = () => { //Função que busca todos os gêneros na API
-        axios.get('http://localhost:3001/api/genres') //Requisição GET para a rota /api
+        api.get('/genres') //Requisição GET para a rota /api
              .then(res => { setData(res.data) }) //Atribui o resultado retornado ao estado 'data'
     }
 
@@ -23,7 +23,7 @@ function Genre() {
         let genre = await document.querySelector('#name_genre').value //Recupera o valor digitado no input 'name_genre'
 
         if (genre !== '') { //Executa caso o valor do input NÃO seja vazio ('')
-            await axios.post('http://localhost:3001/api/genres', { //Requisição POST para a rota /api
+            await api.post('/genres', { //Requisição POST para a rota /api
                 name_genre: genre //Atribui o valor recuperado do input à chave 'name_genre' que será enviado à API para salvar no banco
             })
             .then(document.querySelector('#name_genre').value = '') //Limpa o valor contido no input
@@ -51,7 +51,7 @@ function Genre() {
         let name = await document.querySelector('#name_genre').value //Recupera o valor do input 'name_genre'
 
         if (name !== '') { //Executa caso o valor do input NÃO seja vazio ('')
-            await axios.put(`http://localhost:3001/api/genres/${id}`, { //Requisição PUT para a rota /api/genres/:id, sendo esse ID o recuperado acima
+            await api.put(`/genres/${id}`, { //Requisição PUT para a rota /api/genres/:id, sendo esse ID o recuperado acima
                 name_genre: name //Atribui o valor recuperado do input à chave 'name_genre' que será enviado à API para atualizar no banco
             })
             .then(setShowButton({ showButtonSave: true, showButtonEdit: false })) //Altera a exibição entre os botões ALTERAR e SALVAR
@@ -70,7 +70,7 @@ function Genre() {
     }
 
     const deleteGenre = async id => { //Função que deleta um gênero
-        await axios.delete(`http://localhost:3001/api/genres/${id}`) //Requisição DELETE para a rota /api/genres/:id, sendo esse ID o passado ao chamar a função
+        await api.delete(`/genres/${id}`) //Requisição DELETE para a rota /api/genres/:id, sendo esse ID o passado ao chamar a função
         getAllGenres() //Executa a função que busca todos os gêneros na API (ATUALIZA OS DADOS)
     }
 
